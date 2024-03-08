@@ -12,11 +12,6 @@ pipeline{
       steps{
         sh './output'
         echo 'Test Stage successsful'
-        post{
-          always{
-            junit 'target/sunfire-reports/*xml'
-          }
-        }
       }
     }
     stage('Deploy'){
