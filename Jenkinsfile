@@ -1,30 +1,56 @@
 pipeline {
     agent any
-
     stages {
         stage('Build') {
             steps {
-                // Compile the .cpp file using shell script
-                sh 'g++ -o PES1UG21CS104 hello.cpp'
+                script {
+                    sh 'g++ -o output PES1UG21CS104.cpp'
+                    echo 'Build Stage Successful'
+                }
+            }
+            post {
+                always {
+                    catchError {
+                        sh 'echo "Build stage completed"'
+                    }
+                }
             }
         }
+        
         stage('Test') {
             steps {
-                // Print output of .cpp file using shell script
-                sh './PES1UG21CS104'
+                script {
+                    sh './output'
+                    echo 'Test Stage Successful'
+                }
+            }
+            post {
+                always {
+                    catchError {
+                        sh 'echo "Test stage completed"'
+                    }
+                }
             }
         }
+        
         stage('Deploy') {
             steps {
-                // Placeholder for deployment steps
-                echo 'Deploying...'
+                echo 'Deployment Successful'
+            }
+            post {
+                always {
+                    catchError {
+                        sh 'echo "Deploy stage completed"'
+                    }
+                }
             }
         }
     }
     post {
-        failure {
-            // Display 'pipeline failed' in case of any errors within the pipeline
-            echo 'Pipeline failed'
+        always {
+            catchError {
+                echo 'Pipeline failed'
+            }
         }
     }
 }
