@@ -1,28 +1,30 @@
-pipeline{
-  agent any 
-  stages{
-    stage('Build'){
-      steps{
-        build 'PES1UG21CS104-1'
-        sh 'g++ main.cpp -o output'
-        echo 'Build Stage successsful'
-      }
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                // Compile the .cpp file using shell script
+                sh 'g++ -o PES1UG21CS104 hello.cpp'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Print output of .cpp file using shell script
+                sh './PES1UG21CS104'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Placeholder for deployment steps
+                echo 'Deploying...'
+            }
+        }
     }
-    stage('Test'){
-      steps{
-        sh './output'
-        echo 'Test Stage successsful'
-      }
+    post {
+        failure {
+            // Display 'pipeline failed' in case of any errors within the pipeline
+            echo 'Pipeline failed'
+        }
     }
-    stage('Deploy'){
-      steps{
-        echo 'Deployment successsful'
-      }
-    }
-  }
-  post{
-    failure{
-      echo 'Pipeline Failed'
-    }
-  }
 }
